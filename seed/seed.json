@@ -1,0 +1,43 @@
+{
+    "games": [
+        {
+            "name": "Among Us",
+            "url": "https://innersloth.itch.io/among-us",
+            "description": "Interactive, deduction-style game. You work as either a crewmate or imposter aboard a spaceship. Crewmates win by completing tasks, imposters win by killing crewmates.",
+            "paid": false,
+            "price_desc": "Free with ads on iOS/Android, paid for PC",
+            "min_players": 4,
+            "max_players": 10
+        },
+        {
+            "name": "Skribbl.io",
+            "url": "https://skribbl.io",
+            "description": "Drawing game (one player draws using their mouse and everyone guesses in a chat)",
+            "paid": false,
+            "min_players": 2
+        },
+        {
+            "name": "Board Game Arena",
+            "url": "https://boardgamearena.com/",
+            "description": "Collection of board games including Solo (Uno clone with some new rules)",
+            "paid": false,
+            "min_players": 2
+        },
+        {
+            "name": "Webopoly",
+            "url": "https://webopoly.org/",
+            "description": "Monopoly-style game where all the properties are web companies!",
+            "paid": false,
+            "min_players": 2,
+            "max_players": 4
+        },
+        {
+            "name": "Quiplash",
+            "url": "https://www.jackboxgames.com/quiplash/",
+            "description": "Party game. Everyone answers prompts and the answers with the most votes win!",
+            "paid": true,
+            "price_desc": "$5.49 on Steam (also exists on other platforms)",
+            "min_players": 3
+        }
+    ]
+}

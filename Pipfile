@@ -15,6 +15,7 @@ psycopg2 = "*"
 python-dotenv = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
+click = "*"
 
 [requires]
 python_version = "3.9"

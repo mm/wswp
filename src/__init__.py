@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from dotenv import find_dotenv, load_dotenv
 
 from src.routes import api
+from src.cli import cli_bp
 
 
 def create_app():
@@ -30,5 +31,6 @@ def create_app():
     ma.init_app(app)
 
     app.register_blueprint(api, url_prefix='/api')
-
+    app.register_blueprint(cli_bp)
+    
     return app
