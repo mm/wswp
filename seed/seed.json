@@ -7,21 +7,24 @@
             "paid": false,
             "price_desc": "Free with ads on iOS/Android, paid for PC",
             "min_players": 4,
-            "max_players": 10
+            "max_players": 10,
+            "submitted_by": "Matt"
         },
         {
             "name": "Skribbl.io",
             "url": "https://skribbl.io",
             "description": "Drawing game (one player draws using their mouse and everyone guesses in a chat)",
             "paid": false,
-            "min_players": 2
+            "min_players": 2,
+            "submitted_by": "Matt"
         },
         {
             "name": "Board Game Arena",
             "url": "https://boardgamearena.com/",
             "description": "Collection of board games including Solo (Uno clone with some new rules)",
             "paid": false,
-            "min_players": 2
+            "min_players": 2,
+            "submitted_by": "Matt"
         },
         {
             "name": "Webopoly",
@@ -29,7 +32,8 @@
             "description": "Monopoly-style game where all the properties are web companies!",
             "paid": false,
             "min_players": 2,
-            "max_players": 4
+            "max_players": 4,
+            "submitted_by": "Matt"
         },
         {
             "name": "Quiplash",
@@ -37,7 +41,8 @@
             "description": "Party game. Everyone answers prompts and the answers with the most votes win!",
             "paid": true,
             "price_desc": "$5.49 on Steam (also exists on other platforms)",
-            "min_players": 3
+            "min_players": 3,
+            "submitted_by": "Matt"
         }
     ]
 }
