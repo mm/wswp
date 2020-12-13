@@ -2,6 +2,7 @@
 Module containing all database table definitions.
 """
 
+import datetime
 from src.database import db
 from sqlalchemy.dialects.postgresql import TEXT
 
@@ -31,3 +32,4 @@ class Activity(db.Model):
     price_desc = db.Column(db.String(100), nullable=True)
     min_players = db.Column(db.Integer, nullable=False, default=1)
     max_players = db.Column(db.Integer, nullable=True)
+    created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
