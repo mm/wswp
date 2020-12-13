@@ -8,7 +8,7 @@ from src.routes import api
 from src.cli import cli_bp
 
 
-def create_app():
+def create_app(config='src.config.DevConfig'):
     """Main application factory for WSWP. Will set up all config params,
     load up environment variables and bind things as needed (i.e. binding
     the app object to SQLAlchemy)
@@ -16,12 +16,13 @@ def create_app():
     Returns an application object.
     """
 
+    # Our config classes make use of environment variables, so load
+    # those first:
     if find_dotenv():
         load_dotenv()
 
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(config)
 
     from src.database import db
     from src.schema import ma

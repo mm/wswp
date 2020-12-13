@@ -7,7 +7,8 @@ from src.database import db
 from sqlalchemy.dialects.postgresql import TEXT
 
 class Category(db.Model):
-    """Represents a category of games/activities.
+    """Represents a category of games/activities. Not currently
+    in use.
     """
 
     __tablename__ = 'category'

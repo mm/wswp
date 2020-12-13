@@ -6,7 +6,6 @@ from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
 from src.model import Activity
 from src.schema import ActivitySchema
-
 from random import choice
 
 api = Blueprint('api', __name__)
@@ -54,6 +53,18 @@ def games():
         next_page=game_query.next_num,
         per_page=per_page
     )
+
+
+@api.route('/games/<int:id>', methods=['GET'])
+def get_game(id):
+    """Fetches a game by ID.
+    """
+    schema = ActivitySchema()
+
+    # get_or_404 will immediately 404 if nothing was found
+    game = Activity.query.get_or_404(id)
+
+    return jsonify(game=schema.dump(game))
 
 
 @api.route('/games/random', methods=['GET'])
