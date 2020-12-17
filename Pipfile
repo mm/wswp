@@ -16,6 +16,7 @@ python-dotenv = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 click = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.9"

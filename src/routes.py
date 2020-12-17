@@ -6,9 +6,13 @@ from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
 from src.model import Activity
 from src.schema import ActivitySchema
+import src.handlers as handlers
+from src.exceptions import InvalidUsage
 from random import choice
 
 api = Blueprint('api', __name__)
+api.register_error_handler(ValidationError, handlers.handle_validation_error)
+api.register_error_handler(InvalidUsage, handlers.handle_invalid_usage)
 
 
 @api.route('/pulse', methods=['GET'])
@@ -26,9 +30,11 @@ def games():
 
     activity_schema = ActivitySchema()
 
-    # TODO: Create an InvalidUsage exception to raise here:
-    page = int(request.args.get('page', 1))
-    per_page = int(request.args.get('per_page', 25))
+    try:
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 25))
+    except ValueError:
+        raise InvalidUsage('page and per_page must both be integers greater than 0')
     show = request.args.get('price')
 
     # Begin building a query against the games table
@@ -82,6 +88,12 @@ def random_game():
     free_only = request.args.get('free_only', 'false')
     min_players = int(request.args.get('min', 1))
     max_players = request.args.get('max')
+    if max_players and max_players.isnumeric():
+        max_players = int(max_players)
+        if max_players < min_players:
+            raise InvalidUsage('max_players must be greater than min_players')
+    else:
+        raise InvalidUsage('max_players must be greater than 0')
 
     # Pull IDs matching these conditions from the database:
     game_query = Activity.query

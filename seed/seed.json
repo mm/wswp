@@ -43,6 +43,75 @@
             "price_desc": "$5.49 on Steam (also exists on other platforms)",
             "min_players": 3,
             "submitted_by": "Matt"
+        },
+        {
+            "name": "Colonist.io",
+            "url": "https://colonist.io/",
+            "description": "Online multiplayer Catan-style game.",
+            "paid": false,
+            "min_players": 3,
+            "max_players": 5,
+            "submitted_by": "Matt"
+        },
+        {
+            "name": "Hanabi",
+            "url": "https://hanab.live/",
+            "description": "A place to play Hanab online, a cooperative card game of logic and reasoning",
+            "paid": false,
+            "min_players": 2,
+            "max_players": 5,
+            "submitted_by": "Matt"
+        },
+        {
+            "name": "Monopoly Deal",
+            "url": "http://playmdeal.com",
+            "description": "Online Monopoly-style game.",
+            "paid": false,
+            "min_players": 2,
+            "max_players": 5,
+            "submitted_by": "Matt"
+        },
+        {
+            "name": "Set with Friends",
+            "url": "https://setwithfriends.com/",
+            "description": "Card game where the goal is to find triplets of cards following a pattern as quickly as possible. Can join other people's rooms!",
+            "paid": false,
+            "min_players": 1,
+            "submitted_by": "Matt"
+        },
+        {
+            "name": "Enchambered",
+            "url": "https://www.enchambered.com/puzzles/",
+            "description": "Online escape room puzzles to work through with friends! Offers pay-what-you-want and free puzzles.",
+            "paid": false,
+            "min_players": 1,
+            "submitted_by": "Matt"
+        },
+        {
+            "name": "Secret Hitler",
+            "url": "https://netgames.io/games/secret-hitler/",
+            "description": "Social deduction game.",
+            "paid": false,
+            "min_players": 5,
+            "max_players": 10,
+            "submitted_by": "Matt"
+        },
+        {
+            "name": "Avalon",
+            "url": "https://netgames.io/games/avalon/",
+            "description": "Social deduction game (somewhat similar to Werewolf). The more players the better!",
+            "paid": false,
+            "min_players": 5,
+            "max_players": 10,
+            "submitted_by": "Matt"
+        },
+        {
+            "name": "Codewords",
+            "url": "https://netgames.io/games/codewords/",
+            "description": "Online unofficial Codenames-based game. Each team works together with their Codemaster to uncover their code words.",
+            "paid": false,
+            "min_players": 4,
+            "submitted_by": "Matt"
         }
     ]
 }

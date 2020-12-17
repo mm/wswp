@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_migrate import Migrate
+from flask_cors import CORS
 from dotenv import find_dotenv, load_dotenv
 
 from src.routes import api
@@ -27,9 +28,11 @@ def create_app(config='src.config.DevConfig'):
     from src.database import db
     from src.schema import ma
     db.init_app(app)
-    from src.model import Category, Activity
+    from src.model import Category, Activity, Submission
     migrate = Migrate(app, db)
     ma.init_app(app)
+
+    CORS(app)
 
     app.register_blueprint(api, url_prefix='/api')
     app.register_blueprint(cli_bp)
