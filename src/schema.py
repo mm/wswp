@@ -5,7 +5,7 @@ to and from the API.
 
 from flask_marshmallow import Marshmallow
 from marshmallow import fields, ValidationError, validates, EXCLUDE
-from src.model import Activity, Category, Submission
+from src.model import Activity, Submission
 
 # This will be bound to an application object
 # within the app factory

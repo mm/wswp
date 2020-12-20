@@ -28,7 +28,7 @@ def create_app(config='src.config.DevConfig'):
     from src.database import db
     from src.schema import ma
     db.init_app(app)
-    from src.model import Category, Activity, Submission
+    from src.model import Activity, Submission
     migrate = Migrate(app, db)
     ma.init_app(app)
 
