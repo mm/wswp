@@ -35,3 +35,10 @@ def handle_invalid_usage(error):
     """
 
     return jsonify(error.to_dict()), error.status_code
+
+
+def handle_auth_error(error):
+    """Handles auth failures when attempting to use any of the private endpoints.
+    """
+
+    return jsonify(message=error.error), error.status_code

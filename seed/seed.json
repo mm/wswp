@@ -3,9 +3,8 @@
         {
             "name": "Among Us",
             "url": "https://innersloth.itch.io/among-us",
-            "description": "Interactive, deduction-style game. You work as either a crewmate or imposter aboard a spaceship. Crewmates win by completing tasks, imposters win by killing crewmates.",
+            "description": "Interactive, deduction-style game. You work as either a crewmate or imposter aboard a spaceship. Crewmates win by completing tasks, imposters win by killing crewmates. Free with ads on iOS/Android, paid for PC",
             "paid": false,
-            "price_desc": "Free with ads on iOS/Android, paid for PC",
             "min_players": 4,
             "max_players": 10,
             "submitted_by": "Matt"
@@ -38,9 +37,8 @@
         {
             "name": "Quiplash",
             "url": "https://www.jackboxgames.com/quiplash/",
-            "description": "Party game. Everyone answers prompts and the answers with the most votes win!",
+            "description": "Party game. Everyone answers prompts and the answers with the most votes win! $5.49 on Steam (also exists on other platforms)",
             "paid": true,
-            "price_desc": "$5.49 on Steam (also exists on other platforms)",
             "min_players": 3,
             "submitted_by": "Matt"
         },

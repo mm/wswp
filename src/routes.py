@@ -2,10 +2,13 @@
 Blueprint containing all API resources for WSWP.
 """
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from marshmallow import ValidationError
-from src.model import Activity
-from src.schema import ActivitySchema
+from sqlalchemy import or_, column
+from src.model import Activity, Submission
+from src.schema import ActivitySchema, SubmissionSchema
+from src.database import db
+from src.auth import requires_auth, requires_scope, AuthError
 import src.handlers as handlers
 from src.exceptions import InvalidUsage
 from random import choice
@@ -13,6 +16,7 @@ from random import choice
 api = Blueprint('api', __name__)
 api.register_error_handler(ValidationError, handlers.handle_validation_error)
 api.register_error_handler(InvalidUsage, handlers.handle_invalid_usage)
+api.register_error_handler(AuthError, handlers.handle_auth_error)
 
 
 @api.route('/pulse', methods=['GET'])
@@ -80,37 +84,40 @@ def random_game():
     parameters). Query params:
 
         - free_only: If true, only free games are shown
-        - min: Minimum number of players (default 1)
-        - max: Maximum number of players
+        - players: The number of players in the party
     """
 
     schema = ActivitySchema()
+
+    # Validate our query param input:
     free_only = request.args.get('free_only', 'false')
-    min_players = int(request.args.get('min', 1))
-    max_players = request.args.get('max')
-    if max_players and max_players.isnumeric():
-        max_players = int(max_players)
-        if max_players < min_players:
-            raise InvalidUsage('max_players must be greater than min_players')
-    else:
-        raise InvalidUsage('max_players must be greater than 0')
+    players = request.args.get('players')
+    try:
+        players = int(players)
+    except ValueError:
+        raise InvalidUsage("players must be an integer")
+    if players < 1:
+        raise InvalidUsage("players must be at least 1")
 
     # Pull IDs matching these conditions from the database:
     game_query = Activity.query
 
+    # Find games such that min players <= players <= max_players
+    # (max players can also be null in the case where a game has
+    # a practically infinite # of players)
+    game_query = game_query.filter(
+        Activity.min_players <= players,
+        or_(Activity.max_players >= players, column('max_players').is_(None))
+    )
+
+    # Add a filter against paid games if the user chooses:
     if free_only == 'true':
         game_query = game_query.filter(Activity.paid == False)
     
-    if max_players:
-        game_query = game_query.filter(
-            Activity.min_players >= min_players,
-            Activity.max_players <= max_players
-        )
-    else:
-        game_query = game_query.filter(Activity.min_players >= min_players)
-    
+    # Get a list of primary key IDs representing the games:
     ids = [game.id for game in game_query.all()]
     
+    # Then pick randomly from them:
     if len(ids) > 0:
         game = Activity.query.get(choice(ids))
         return jsonify(game=schema.dump(game)), 200
@@ -123,5 +130,108 @@ def consume_suggestion():
     """Pushes a game suggestion to the database. Input
     data is form data.
     """
+    # Perform validation on what we receive:
+    schema = SubmissionSchema()
+    input_json = request.get_json()
+    if not input_json:
+        return InvalidUsage("Please submit a game")
 
-    return jsonify(message="Not yet implemented"), 501
+    print("/games/suggest received JSON:")
+    print(f'{input_json}')
+    
+    # Loading will perform validation checks -- if there's
+    # a problem, we have a handler for this
+    submission = schema.load(input_json)
+
+    if submission['max_players'] == 0:
+        submission['max_players'] = None
+
+    # If we made it to this point, data passed validation checks
+    # and we go ahead and try to submit to the database:
+    try:
+        db.session.add(Submission(**submission))
+        db.session.commit()
+        return jsonify(message="Submission added successfully"), 200
+    except Exception as e:
+        # TODO: More specific db error handling
+        current_app.logger.error(f'Issue saving submission: {e}')
+        return jsonify(message="Internal server error"), 500
+
+
+@api.route('/admin/submissions/approve/<int:id>', methods=['GET'])
+@requires_auth
+def approve_submission(id, current_user=None):
+    """Enables approval of game submissions from the admin
+    panel. This marks the game as approved in the submissions table,
+    and pushes it into the main activity table.
+    """
+
+    if not current_user:
+        raise AuthError("You need to be authorized to access this endpoint")
+
+    submission = Submission.query.get_or_404(id)
+
+    try:
+        game = Activity(
+            name=submission.name,
+            url=submission.url,
+            description=submission.description,
+            paid=submission.paid,
+            min_players=submission.min_players,
+            max_players=submission.max_players,
+            submitted_by=submission.submitted_by
+        )
+        db.session.add(game)
+        submission.approved = True
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error(f"Could not approve submission {id}")
+        return jsonify(message="Could not approve submission"), 500
+    
+    return jsonify(message="Approved submission"), 200
+
+
+@api.route('/admin/submissions/<int:id>', methods=['DELETE'])
+@requires_auth
+def archive_submission(id, current_user=None):
+    """Marks a submission as archived. Archived submissions are regularly
+    purged from the database.
+    """
+
+    if not current_user:
+        raise AuthError("You need to be authorized to access this endpoint")
+
+    submission = Submission.query.get_or_404(id)
+    try:
+        submission.archived = True
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error(f'Could not archive submission {id}')
+        return jsonify(message="Could not archive submission"), 500
+    
+    return jsonify(message="Archived submission"), 200
+
+
+@api.route('/admin/submissions', methods=['GET'])
+@requires_auth
+def list_submissions(current_user=None):
+    """Lists all submissions currently in the queue.
+    """
+
+    if not current_user:
+        raise AuthError("You need to be authorized to access this endpoint")
+
+    schema = SubmissionSchema()
+
+    # Get all submissions that haven't been marked as archived
+    # or approved:
+    submission_query = Submission.query
+    submission_query = submission_query.filter(
+        Submission.archived != True,
+        Submission.approved != True
+    ).order_by(Submission.created_date.desc())
+
+    results = schema.dump(submission_query.all(), many=True)
+    
+    return jsonify(submissions=results), 200
+

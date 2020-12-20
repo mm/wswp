@@ -17,6 +17,8 @@ flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 click = "*"
 flask-cors = "*"
+python-jose = "*"
+requests = "*"
 
 [requires]
 python_version = "3.9"

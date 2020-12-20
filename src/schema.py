@@ -51,9 +51,11 @@ class SubmissionSchema(ma.SQLAlchemyAutoSchema):
             "created_date", "approved", "archived",
             "submitted_by"
         )
+        unknown=EXCLUDE
     # Override URL, because we want to use the built-in
     # Marshmallow URL validator:
     url = fields.URL(required=True)
+    approved = fields.Boolean(dump_only=True)
 
     # A custom validator for min_players:
     @validates("min_players")
