@@ -5,6 +5,7 @@ Module containing all database table definitions.
 import datetime
 from src.database import db
 from sqlalchemy.dialects.postgresql import TEXT
+from sqlalchemy import func
 
 
 class Activity(db.Model):

@@ -4,7 +4,8 @@ Blueprint containing all API resources for WSWP.
 
 from flask import Blueprint, jsonify, request, current_app
 from marshmallow import ValidationError
-from sqlalchemy import or_, column
+from sqlalchemy import or_, column, text
+from sqlalchemy.sql import functions
 from src.model import Activity, Submission
 from src.schema import ActivitySchema, SubmissionSchema
 from src.database import db
@@ -63,6 +64,43 @@ def games():
         next_page=game_query.next_num,
         per_page=per_page
     )
+
+
+@api.route('/games/search', methods=['GET'])
+def search_games():
+    """Searches for games (either by title or description)
+    Query Param Args:
+        - query: Query terms to search for
+        - page: The page to access
+        - per_page: The number of results to return per page
+    """
+
+    schema = ActivitySchema()
+    try:
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 25))
+    except ValueError:
+        raise InvalidUsage('page and per_page must both be integers greater than 0')
+    query = request.args.get('query')
+    
+    results = []
+    if query:
+        db_query = db.session.query(Activity).from_statement(text(
+            """select * 
+            from activity
+            where to_tsvector(name || ' ' || coalesce(description, '')) @@ plainto_tsquery(:searchparam);
+            """
+        )).params(searchparam=query)
+        
+        results = schema.dump(db_query.all(), many=True)
+
+        return jsonify(
+            games=results,
+            page=1,
+            total_pages=1
+        ), 200
+
+    return jsonify(games=results), 200
 
 
 @api.route('/games/<int:id>', methods=['GET'])
