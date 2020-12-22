@@ -29,7 +29,7 @@ def check_pulse():
 @api.route('/games', methods=['GET'])
 def games():
     """Returns a list of games. Games are by default
-    paginated to 25 items per page, and can be filtered
+    paginated to 30 items per page, and can be filtered
     via query params.
     """
 
@@ -37,7 +37,7 @@ def games():
 
     try:
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 25))
+        per_page = int(request.args.get('per_page', 30))
     except ValueError:
         raise InvalidUsage('page and per_page must both be integers greater than 0')
     show = request.args.get('price')
@@ -78,29 +78,23 @@ def search_games():
     schema = ActivitySchema()
     try:
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 25))
+        per_page = int(request.args.get('per_page', 30))
     except ValueError:
         raise InvalidUsage('page and per_page must both be integers greater than 0')
     query = request.args.get('query')
-    
-    results = []
+
     if query:
-        db_query = db.session.query(Activity).from_statement(text(
-            """select * 
-            from activity
-            where to_tsvector(name || ' ' || coalesce(description, '')) @@ plainto_tsquery(:searchparam);
-            """
-        )).params(searchparam=query)
-        
-        results = schema.dump(db_query.all(), many=True)
+        db_results = Activity.search(query, page=page, per_page=per_page)
+        results = schema.dump(db_results.results, many=True)
 
         return jsonify(
             games=results,
-            page=1,
-            total_pages=1
+            page=page,
+            total_pages=db_results.total_pages,
+            next_page=db_results.next_page
         ), 200
 
-    return jsonify(games=results), 200
+    return jsonify(games=[], page=1, total_pages=1, next_page=None)
 
 
 @api.route('/games/<int:id>', methods=['GET'])
