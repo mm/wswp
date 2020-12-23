@@ -28,7 +28,8 @@ def get_token_auth_header():
 
 def requires_auth(f):
     """Wraps a function view to determine if a given access
-    token is valid before accessing a resource.
+    token is valid before accessing a resource. Populates the
+    current_user parameter on any view function.
     """
     @wraps(f)
     def decorated(*args, **kwargs):

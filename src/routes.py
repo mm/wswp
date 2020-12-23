@@ -10,9 +10,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from src.model import Activity, Submission
 from src.schema import ActivitySchema, SubmissionSchema
 from src.database import db
-from src.auth import requires_auth, requires_scope, AuthError
+from src.auth import requires_auth
 import src.handlers as handlers
-from src.exceptions import InvalidUsage
+from src.exceptions import InvalidUsage, AuthError
 from random import choice
 
 api = Blueprint('api', __name__)
