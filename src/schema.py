@@ -56,6 +56,8 @@ class SubmissionSchema(ma.SQLAlchemyAutoSchema):
     # Marshmallow URL validator:
     url = fields.URL(required=True)
     approved = fields.Boolean(dump_only=True)
+    name = fields.String(required=True)
+    description = fields.String(required=True)
 
     # A custom validator for min_players:
     @validates("min_players")

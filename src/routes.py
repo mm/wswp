@@ -6,6 +6,7 @@ from flask import Blueprint, jsonify, request, current_app
 from marshmallow import ValidationError
 from sqlalchemy import or_, column, text
 from sqlalchemy.sql import functions
+from sqlalchemy.exc import SQLAlchemyError
 from src.model import Activity, Submission
 from src.schema import ActivitySchema, SubmissionSchema
 from src.database import db
@@ -18,6 +19,7 @@ api = Blueprint('api', __name__)
 api.register_error_handler(ValidationError, handlers.handle_validation_error)
 api.register_error_handler(InvalidUsage, handlers.handle_invalid_usage)
 api.register_error_handler(AuthError, handlers.handle_auth_error)
+api.register_error_handler(SQLAlchemyError, handlers.handle_database_error)
 
 
 @api.route('/pulse', methods=['GET'])
@@ -31,6 +33,10 @@ def games():
     """Returns a list of games. Games are by default
     paginated to 30 items per page, and can be filtered
     via query params.
+
+    Query params:
+        - page: The page of games to fetch (int)
+        - per_page: The number of items to fetch per page (int)
     """
 
     activity_schema = ActivitySchema()
@@ -63,16 +69,17 @@ def games():
         total_pages=game_query.pages,
         next_page=game_query.next_num,
         per_page=per_page
-    )
+    ), 200
 
 
 @api.route('/games/search', methods=['GET'])
 def search_games():
     """Searches for games (either by title or description)
-    Query Param Args:
-        - query: Query terms to search for
-        - page: The page to access
-        - per_page: The number of results to return per page
+    
+    Query Params:
+        - query: Query terms to search for (string)
+        - page: The page to access (int)
+        - per_page: The number of results to return per page (int)
     """
 
     schema = ActivitySchema()
@@ -159,8 +166,8 @@ def random_game():
 
 @api.route('/games/suggest', methods=['POST'])
 def consume_suggestion():
-    """Pushes a game suggestion to the database. Input
-    data is form data.
+    """Pushes a game suggestion to the database. Expects a JSON
+    payload conforming to the submission schema.
     """
     # Perform validation on what we receive:
     schema = SubmissionSchema()
@@ -168,8 +175,12 @@ def consume_suggestion():
     if not input_json:
         return InvalidUsage("Please submit a game")
 
-    print("/games/suggest received JSON:")
-    print(f'{input_json}')
+
+    # For any empty strings, set them to None so our
+    # schema validation catches it:
+    for key, value in input_json.items():
+        if input_json[key] == '':
+            input_json[key] = None
     
     # Loading will perform validation checks -- if there's
     # a problem, we have a handler for this
@@ -178,14 +189,16 @@ def consume_suggestion():
     if submission['max_players'] == 0:
         submission['max_players'] = None
 
+
     # If we made it to this point, data passed validation checks
     # and we go ahead and try to submit to the database:
     try:
         db.session.add(Submission(**submission))
         db.session.commit()
         return jsonify(message="Submission added successfully"), 200
+    except SQLAlchemyError:
+        raise  # we have a handler for this declared up top
     except Exception as e:
-        # TODO: More specific db error handling
         current_app.logger.error(f'Issue saving submission: {e}')
         return jsonify(message="Internal server error"), 500
 

@@ -20,3 +20,12 @@ class InvalidUsage(Exception):
         response = dict(self.payload or ())
         response['message'] = self.message
         return response
+
+
+class AuthError(Exception):
+    """Exception raised when validating incoming JWTs
+    for private endpoints
+    """
+    def __init__(self, error, status_code=401):
+        self.error = error
+        self.status_code = status_code

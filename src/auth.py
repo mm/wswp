@@ -5,15 +5,10 @@ JWTs before accessing private endpoints.
 import json, os
 from functools import wraps
 from flask import request
-
 from jose import jwt
 import requests
 
-
-class AuthError(Exception):
-    def __init__(self, error, status_code=401):
-        self.error = error
-        self.status_code = status_code
+from src.exceptions import AuthError
 
 
 def get_token_auth_header():
@@ -73,19 +68,3 @@ def requires_auth(f):
             return f(*args, **kwargs, current_user=payload)
         raise AuthError("Unable to find required key")
     return decorated
-
-
-def requires_scope(required_scope):
-    """Determines if the required scope is present in the Access Token passed.
-    Note: This doesn't perform validation and is designed to be run after the
-    token was validated.
-    """
-
-    token = get_token_auth_header()
-    unverified_claims = jwt.get_unverified_claims(token)
-    if unverified_claims.get("scope"):
-            token_scopes = unverified_claims["scope"].split()
-            for token_scope in token_scopes:
-                if token_scope == required_scope:
-                    return True
-    return False
