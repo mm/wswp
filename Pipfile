@@ -19,6 +19,8 @@ click = "*"
 flask-cors = "*"
 python-jose = "*"
 requests = "*"
+gunicorn = "*"
+flask-limiter = "*"
 
 [requires]
 python_version = "3.9"

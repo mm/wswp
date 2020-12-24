@@ -2,11 +2,12 @@ import os
 
 from flask import Flask
 from flask_migrate import Migrate
-from flask_cors import CORS
 from dotenv import find_dotenv, load_dotenv
 
 from src.routes import api
 from src.cli import cli_bp
+from src.auth import cors, limiter
+
 
 
 def create_app(config='src.config.DevConfig'):
@@ -32,7 +33,13 @@ def create_app(config='src.config.DevConfig'):
     migrate = Migrate(app, db)
     ma.init_app(app)
 
-    CORS(app)
+    # Register cross-origin resource sharing and rate limiting modules:
+    cors.init_app(app)
+    limiter.init_app(app)
+
+    # Associate all handlers of the Flask logger instance:
+    for handler in app.logger.handlers:
+        limiter.logger.addHandler(handler)
 
     app.register_blueprint(api, url_prefix='/api')
     app.register_blueprint(cli_bp)

@@ -1,5 +1,6 @@
 """Module to interface with Auth0 and validate
-JWTs before accessing private endpoints.
+JWTs before accessing private endpoints. Also controls cross-origin
+resource sharing and rate limiting throughout the application.
 """
 
 import json, os
@@ -7,8 +8,13 @@ from functools import wraps
 from flask import request
 from jose import jwt
 import requests
+from flask_limiter import Limiter, util
+from flask_cors import CORS
 
-from src.exceptions import AuthError
+from src.exceptions import AuthError, InvalidUsage
+
+limiter = Limiter(key_func=util.get_remote_address, default_limits=["10/second;1000/day"])
+cors = CORS()
 
 
 def get_token_auth_header():
@@ -33,6 +39,10 @@ def requires_auth(f):
     """
     @wraps(f)
     def decorated(*args, **kwargs):
+
+        if current_app.config['ADMIN_OFF']:
+            raise InvalidUsage("Private endpoints have been turned off", status_code=501)
+
         # Get token from Authorization: Bearer <Token> header
         token = get_token_auth_header()
         # Look through known JSON Web Key Sets:

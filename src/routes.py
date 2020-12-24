@@ -10,7 +10,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from src.model import Activity, Submission
 from src.schema import ActivitySchema, SubmissionSchema
 from src.database import db
-from src.auth import requires_auth
+from src.auth import requires_auth, limiter, cors
 import src.handlers as handlers
 from src.exceptions import InvalidUsage, AuthError
 from random import choice
@@ -83,6 +83,8 @@ def search_games():
     """
 
     schema = ActivitySchema()
+
+
     try:
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 30))
@@ -165,6 +167,7 @@ def random_game():
 
 
 @api.route('/games/suggest', methods=['POST'])
+@limiter.limit("100/hour")
 def consume_suggestion():
     """Pushes a game suggestion to the database. Expects a JSON
     payload conforming to the submission schema.
