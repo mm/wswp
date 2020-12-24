@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  api:
+    restart: always
+    depends_on: 
+      - "db"
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 --reload "src:create_app('src.config.DevConfig')"
+    ports:
+      - "8000:8000"
+    links:
+      - db:db
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://wswp:supersecure@db/postgres
+    env_file:
+      - .env
+    volumes:
+      - .:/wswp
+  db:
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=wswp
+      - POSTGRES_PASSWORD=supersecure

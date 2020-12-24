@@ -13,13 +13,6 @@ from src.database import db
 cli_bp = Blueprint('admin', __name__)
 
 
-@cli_bp.cli.command('create-admin')
-def create_admin():
-    """Creates an administrative user.
-    """
-    pass
-
-
 @cli_bp.cli.command('seed-db')
 def seed_db():
     """Seeds game tables with data.

@@ -5,7 +5,7 @@ resource sharing and rate limiting throughout the application.
 
 import json, os
 from functools import wraps
-from flask import request
+from flask import request, current_app
 from jose import jwt
 import requests
 from flask_limiter import Limiter, util
