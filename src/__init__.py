@@ -26,6 +26,9 @@ def create_app(config='src.config.DevConfig'):
     app = Flask(__name__)
     app.config.from_object(config)
 
+    if app.config['ADMIN_OFF']:
+        app.logger.info("Note: admin endpoints have been disabled!")
+
     from src.database import db
     from src.schema import ma
     db.init_app(app)

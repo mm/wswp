@@ -9,7 +9,7 @@ class Config(object):
     """
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    ADMIN_OFF = bool(os.getenv('ADMIN_OFF'))
+    ADMIN_OFF = bool(int(os.getenv('ADMIN_OFF', 0)))
 
 
 class DevConfig(Config):
