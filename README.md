@@ -1,5 +1,7 @@
-<h1 style="text-align: center">What Should We Play?</h1>
-<p style="text-align: center">A [DigitalOcean App Platform Hackathon](https://dev.to/devteam/announcing-the-digitalocean-app-platform-hackathon-on-dev-2i1k) project</p>
+<div style="text-align: center">
+    <h1>What Should We Play?</h1>
+    <p>A <a href="https://dev.to/devteam/announcing-the-digitalocean-app-platform-hackathon-on-dev-2i1k">DigitalOcean App Platform Hackathon</a> project</p>
+</div>
 
 While we've been social distancing, on lockdown, or apart from friends during COVID-19, online games have been an awesome way to keep in touch and still feel connected. With so many games online and all kinds of threads full of games to explore, it can be hard to keep track of them all! I built What Should We Play to serve as an index for games which anyone in the community can quickly add new entries to, and a tool that'll randomly pick games out of the index based on your party size!
 
