@@ -44,7 +44,7 @@ def create_app(config='src.config.DevConfig'):
     for handler in app.logger.handlers:
         limiter.logger.addHandler(handler)
 
-    app.register_blueprint(api, url_prefix='/api')
+    app.register_blueprint(api, url_prefix='/v1')
     app.register_blueprint(cli_bp)
     
     return app
