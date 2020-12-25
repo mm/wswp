@@ -43,7 +43,7 @@ def games():
 
     try:
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 30))
+        per_page = int(request.args.get('per_page', 20))
     except ValueError:
         raise InvalidUsage('page and per_page must both be integers greater than 0')
     show = request.args.get('price')
@@ -87,7 +87,7 @@ def search_games():
 
     try:
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 30))
+        per_page = int(request.args.get('per_page', 20))
     except ValueError:
         raise InvalidUsage('page and per_page must both be integers greater than 0')
     query = request.args.get('query')
