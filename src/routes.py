@@ -10,9 +10,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from src.model import Activity, Submission
 from src.schema import ActivitySchema, SubmissionSchema
 from src.database import db
+from src.exceptions import InvalidUsage, AuthError
 from src.auth import requires_auth, limiter, cors
 import src.handlers as handlers
-from src.exceptions import InvalidUsage, AuthError
 from random import choice
 
 api = Blueprint('api', __name__)
@@ -37,6 +37,7 @@ def games():
     Query params:
         - page: The page of games to fetch (int)
         - per_page: The number of items to fetch per page (int)
+        - price: Either 'free' or 'paid' (show only free or paid games)
     """
 
     activity_schema = ActivitySchema()
