@@ -1,0 +1,43 @@
+spec:
+  name: whatshouldweplay
+  databases:
+    - name: db
+      engine: PG
+      version: "12"
+  services:
+    - name: wswp-backend
+      environment_slug: python
+      git:
+        branch: main
+        repo_clone_url: https://github.com/mm/wswp.git
+      envs:
+        - key: FLASK_ENV
+          scope: RUN_AND_BUILD_TIME
+          value: production
+        - key: ADMIN_OFF
+          scope: RUN_AND_BUILD_TIME
+          value: "0"
+        - key: AUTH0_DOMAIN
+          scope: RUN_AND_BUILD_TIME
+        - key: AUTH0_API_AUDIENCE
+          scope: RUN_AND_BUILD_TIME
+        - key: DATABASE_URL
+          scope: RUN_TIME
+          value: ${db.DATABASE_URL}
+      http_port: 8080
+      instance_count: 1
+      routes:
+        - path: /api
+      run_command: gunicorn "src:create_app('src.config.ProdConfig')" --worker-tmp-dir /dev/shm
+  static_sites:
+    - name: wswp-frontend
+      environment_slug: node-js
+      git:
+        branch: main
+        repo_clone_url: https://github.com/mm/wswp-frontend.git
+      envs:
+        - key: REACT_APP_API_URL
+          scope: BUILD_TIME
+          value: ${APP_URL}/api/v1
+      routes:
+        - path: /
