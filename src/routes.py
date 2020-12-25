@@ -31,7 +31,7 @@ def check_pulse():
 @api.route('/games', methods=['GET'])
 def games():
     """Returns a list of games. Games are by default
-    paginated to 30 items per page, and can be filtered
+    paginated to 20 items per page, and can be filtered
     via query params.
 
     Query params:
