@@ -68,6 +68,8 @@ If you'd like to test drive the admin functionality (where you can approve/deny 
 
 The backend exposes a couple public API endpoints (subject to rate limiting), that anyone can use in their applications. All timestamps are returned in UTC and responses are all in JSON. Errors are also returned with a JSON payload describing what happened.
 
+For the live API, the base URL for requests is `https://whatshouldweplay.xyz/api/v1`. No authentication is required on these public methods.
+
 ### Game Schema
 
 Whenever games are returned, they'll follow this schema:
@@ -88,7 +90,7 @@ Simple status check to make sure the API is online. Returns a `200` with:
 
 ```json
 {
-    "message": "API is online"
+  "message": "API is online"
 }
 ```
 
