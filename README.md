@@ -8,6 +8,23 @@ While we've been social distancing, on lockdown, or apart from friends during CO
 
 This project was created for the [DigitalOcean App Platform Hackathon](https://dev.to/devteam/announcing-the-digitalocean-app-platform-hackathon-on-dev-2i1k) and serves as the site's backend. Other repositories are available for the site's [front-end](https://github.com/mm/wswp-frontend) and [admin panel](https://github.com/mm/wswp-admin) built to quickly approve and add in community submissions to the index. All three have been deployed to App Platform together and you can access the site at [whatshouldweplay.xyz](https://whatshouldweplay.xyz), but read on to learn more about the stack and building it yourself!
 
+**Note:** If you're using the Deploy to DigitalOcean button above, please follow the instructions [here](https://github.com/mm/wswp#deploying-to-digitalocean) to initialize the database and get the front-end and back-end talking to each other.
+
+## Table of Contents
+
+- [Overall Project Stack](#overall-project-stack)
+- [Building the project locally](#building-the-project-locally)
+  - [With Docker](#with-docker)
+  - [Without Docker](#without-docker)
+- [Deploying to DigitalOcean](#deploying-to-digitalocean)
+- [Using the API](#using-the-api)
+  - [Game Schema](#game-schema)
+  - [GET /pulse](#get-pulse)
+  - [GET /games](#get-games)
+  - [GET /games/:id](#get-games-id)
+  - [GET /games/random](#get-games-random)
+  - [GET /games/search](#get-games-search)
+
 ## Overall Project Stack
 
 - **Backend**: Python (Flask for defining the API, SQLAlchemy as an ORM), PostgreSQL
@@ -15,7 +32,7 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
 
 Private "admin" endpoints used to power the admin panel are authenticated through [Auth0](https://auth0.com/). Besides the private endpoints requiring JWT auth, all of the API endpoints are public to consume the index in whatever way you like!
 
-## Getting started
+## Building the project locally
 
 If you aren't using Docker, you'll need a PostgreSQL instance to connect to somewhere on your computer. 
 
@@ -65,6 +82,21 @@ If you'd like to test drive the admin functionality (where you can approve/deny 
     ```
 
 5. Good to go! Feel free to go ahead and get the [frontend](https://github.com/mm/wswp-frontend) set up using the instructions there, or test out the API! The base URL for all requests will be `localhost:5000/v1` unless you've set something up otherwise.
+
+## Deploying to DigitalOcean
+
+Due to a current limitation with the Deploy to DigitalOcean button, using this button will only deploy the backend (the frontend won't be included). Once the backend has finished deploying, go to your app in the App Platform console and click on the "Console" tab. Enter these two commands to get the database initialized and seeded with some games to start out:
+
+```console
+flask db upgrade
+flask admin seed-db
+```
+
+Afterwards, you're ready to go! It's time to deploy the front-end. You can do this one of two ways:
+
+* Using the "Deploy to DigitalOcean" button on the [front-end repository](https://github.com/mm/wswp-frontend). Make sure to set the environment variable `REACT_APP_API_URL` to `https://your-app-slug.ondigitalocean.app/api/v1`. 
+
+* By forking the [front-end repository](https://github.com/mm/wswp-frontend) to your account and adding it as a static site component to your current back-end project (more instructions are in the [front-end repository](https://github.com/mm/wswp-frontend)). In this case, you want to set your `REACT_APP_API_URL` to `${APP_URL}/api/v1`, since it lives in the same project.
 
 ## Using the API
 
@@ -156,6 +188,32 @@ Fetches a game by its ID (not exposed on the front-end)
 ```
 
 ### GET /games/random
+
+Randomly returns one game based on how many players will be playing, and whether only free games should be returned.
+
+* Query parameters:
+  * `free_only`: Whether to only return free games (default `false`)
+  * `players`: The number of players in your party (int)
+
+**Example request:** `GET /games/random?players=2`
+
+```json
+{
+  "game": {
+    "created_date": "2020-12-24T03:32:52.157672",
+    "description": "Online escape room puzzles to work through with friends! Offers pay-what-you-want and free puzzles.",
+    "id": 10,
+    "max_players": null,
+    "min_players": 1,
+    "name": "Enchambered",
+    "paid": false,
+    "submitted_by": "Matt",
+    "url": "https://www.enchambered.com/puzzles/"
+  }
+}
+```
+
+### GET /games/search
 
 Searches for games. This does a full-text search in the database of the game titles and descriptions. Results are paginated (can be controlled by query params)
 

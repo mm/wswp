@@ -29,15 +29,3 @@ spec:
       routes:
         - path: /api
       run_command: gunicorn "src:create_app('src.config.ProdConfig')" --worker-tmp-dir /dev/shm
-  static_sites:
-    - name: wswp-frontend
-      environment_slug: node-js
-      git:
-        branch: main
-        repo_clone_url: https://github.com/mm/wswp-frontend.git
-      envs:
-        - key: REACT_APP_API_URL
-          scope: BUILD_TIME
-          value: ${APP_URL}/api/v1
-      routes:
-        - path: /
