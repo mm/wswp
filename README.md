@@ -4,7 +4,7 @@
 
 While we've been social distancing, on lockdown, or apart from friends during COVID-19, online games have been an awesome way to keep in touch and still feel connected. With so many games online and all kinds of threads full of games to explore, it can be hard to keep track of them all! I built What Should We Play to serve as an index for games which anyone in the community can quickly add new entries to, and a tool that'll randomly pick games out of the index based on your party size!
 
-<img src="https://media.giphy.com/media/vYLjeALSmxztMwp5Jw/giphy.gif" alt="A GIF of the index and pick random game feature" style="text-align: center" />
+![A GIF of the index and pick random game feature](https://media.giphy.com/media/vYLjeALSmxztMwp5Jw/giphy.gif)
 
 This project was created for the [DigitalOcean App Platform Hackathon](https://dev.to/devteam/announcing-the-digitalocean-app-platform-hackathon-on-dev-2i1k) and serves as the site's backend. Other repositories are available for the site's [front-end](https://github.com/mm/wswp-frontend) and [admin panel](https://github.com/mm/wswp-admin) built to quickly approve and add in community submissions to the index. All three have been deployed to App Platform together and you can access the site at [whatshouldweplay.xyz](https://whatshouldweplay.xyz), but read on to learn more about the stack and building it yourself!
 
