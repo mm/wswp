@@ -12,13 +12,13 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
 
 ## Table of Contents
 
-- [Overall Project Stack](#overall-project-stack)
-- [Environment Variables](#environment-variables)
-- [Building the project locally](#building-the-project-locally)
+- [Overall Project Stack](#-overall-project-stack)
+- [Environment Variables](#-environment-variables)
+- [Building the project locally](#-building-the-project-locally)
   - [With Docker](#with-docker)
   - [Without Docker](#without-docker)
-- [Deploying to DigitalOcean](#deploying-to-digitalocean)
-- [Using the API](#using-the-api)
+- [Deploying to DigitalOcean](#-deploying-to-digitalocean)
+- [Using the API](#-using-the-api)
   - [Game Schema](#game-schema)
   - [GET /pulse](#get-pulse)
   - [GET /games](#get-games)
@@ -33,14 +33,17 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
 
 Private "admin" endpoints used to power the admin panel are authenticated through [Auth0](https://auth0.com/). Besides the private endpoints requiring JWT auth, all of the API endpoints are public to consume the index in whatever way you like!
 
-## 🔖 Environment Variables
+## 🔖  Environment Variables
 
-No matter where you're deploying the project, these environment variables control some of the back-end's behaviour:
+No matter where you're deploying the project, these environment variables control some of the back-end's behaviour. `.env` files are read in automatically if you're developing locally.
 
 * `FLASK_ENV`: Can be "development" while developing
 * `DATABASE_URL`: The connection string to access your PostgreSQL instance. See docs at [SQLAlchemy](https://docs.sqlalchemy.org/en/13/core/engines.html#postgresql) for how to format it. This is already taken care of as `${db.DATABASE_URL}` if you're deploying to DigitalOcean via the button
-* `SENTRY_DSN`: The Sentry [data source name](https://docs.sentry.io/product/sentry-basics/dsn-explainer/), if you'd like to enable logging with Sentry
-* `SENTRY_ENVIRONMENT`: The Sentry [environment](https://docs.sentry.io/product/sentry-basics/environments/), if you'd like to enable logging with Sentry
+
+To add in Sentry logging, add these environment variables:
+
+* `SENTRY_DSN`: The Sentry [data source name](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)
+* `SENTRY_ENVIRONMENT`: The Sentry [environment](https://docs.sentry.io/product/sentry-basics/environments/)
 
 If you'd like to test drive the admin functionality (where you can approve/deny submissions), sign up for [Auth0](https://auth0.com) and keep track of your Auth0 domain. Create an API and single-page application and make note of the API audience and client ID as these will end up being used for environment variables:
 
