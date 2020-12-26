@@ -24,6 +24,10 @@ spec:
         - key: DATABASE_URL
           scope: RUN_TIME
           value: ${db.DATABASE_URL}
+        - key: SENTRY_DSN
+          scope: RUN_TIME
+        - key: SENTRY_ENVIRONMENT
+          scope: RUN_TIME
       http_port: 8080
       instance_count: 1
       routes:

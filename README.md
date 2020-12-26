@@ -97,7 +97,7 @@ If you aren't using Docker, you'll need a PostgreSQL instance to connect to some
 
 ## 🚀 Deploying to DigitalOcean
 
-Due to a current limitation with the Deploy to DigitalOcean button, using this button will only deploy the backend (the frontend won't be included). Once the backend has finished deploying, go to your app in the App Platform console and click on the "Console" tab. Enter these two commands to get the database initialized and seeded with some games to start out:
+Due to a current limitation with the Deploy to DigitalOcean button, using this button will only deploy the backend (the frontend won't be included). You can leave any environment variables that don't apply to your deployment blank. Once the backend has finished deploying, go to your app in the App Platform console and click on the "Console" tab. Enter these two commands to get the database initialized and seeded with some games to start out:
 
 ```console
 flask db upgrade
