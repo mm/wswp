@@ -112,7 +112,7 @@ Afterwards, you're ready to go! It's time to deploy the front-end. You can do th
 
 ## 👾 Using the API
 
-The backend exposes a couple public API endpoints (subject to rate limiting), that anyone can use in their applications. All timestamps are returned in UTC and responses are all in JSON. Errors are also returned with a JSON payload describing what happened.
+The backend exposes a couple public REST API endpoints (subject to rate limiting), that anyone can use in their applications. All timestamps are returned in UTC and responses are all in JSON. Errors are also returned with a JSON payload describing what happened.
 
 For the live API, the base URL for requests is `https://whatshouldweplay.xyz/api/v1`. No authentication is required on these public methods.
 
