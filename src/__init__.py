@@ -35,7 +35,7 @@ def create_app(config='src.config.DevConfig'):
     # SENTRY_ENVIRONMENT variable
     sentry_sdk.init(
         integrations=[FlaskIntegration()],
-        traces_sample_rate=0.2
+        traces_sample_rate=0.5
     )
 
     from src.database import db

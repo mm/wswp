@@ -4,7 +4,7 @@ to and from the API.
 """
 
 from flask_marshmallow import Marshmallow
-from marshmallow import fields, ValidationError, validates, EXCLUDE
+from marshmallow import fields, ValidationError, validates, validates_schema, EXCLUDE
 from src.model import Activity, Submission
 
 # This will be bound to an application object
@@ -58,6 +58,8 @@ class SubmissionSchema(ma.SQLAlchemyAutoSchema):
     approved = fields.Boolean(dump_only=True)
     name = fields.String(required=True)
     description = fields.String(required=True)
+    paid = fields.Bool(default=False, missing=False)
+    min_players = fields.Integer(required=True)
 
     # A custom validator for min_players:
     @validates("min_players")
@@ -65,3 +67,8 @@ class SubmissionSchema(ma.SQLAlchemyAutoSchema):
         if value <= 0:
             raise ValidationError("Minimum players has to be at least 1")
 
+    # Custom validator to check and make sure our max players is greater (or equal to) min players
+    @validates_schema
+    def validate_max_players(self, data, **kwargs):
+        if data['max_players'] and data['max_players'] < data['min_players']:
+            raise ValidationError({'max_players': ["Maximum players must be blank or greater than the minimum players"]})
