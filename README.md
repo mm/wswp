@@ -21,9 +21,9 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
   - [Game Schema](#game-schema)
   - [GET /pulse](#get-pulse)
   - [GET /games](#get-games)
-  - [GET /games/:id](#get-games-id)
-  - [GET /games/random](#get-games-random)
-  - [GET /games/search](#get-games-search)
+  - [GET /games/:id](#get-gamesid)
+  - [GET /games/random](#get-gamesrandom)
+  - [GET /games/search](#get-gamessearch)
 
 ## Overall Project Stack
 
