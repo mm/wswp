@@ -13,6 +13,7 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
 ## Table of Contents
 
 - [Overall Project Stack](#overall-project-stack)
+- [Environment Variables](#environment-variables)
 - [Building the project locally](#building-the-project-locally)
   - [With Docker](#with-docker)
   - [Without Docker](#without-docker)
@@ -25,18 +26,31 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
   - [GET /games/random](#get-gamesrandom)
   - [GET /games/search](#get-gamessearch)
 
-## Overall Project Stack
+## 📚 Overall Project Stack
 
 - **Backend**: Python (Flask for defining the API, SQLAlchemy as an ORM), PostgreSQL
 - **Frontend**: React, Chakra UI for building the user interface
 
 Private "admin" endpoints used to power the admin panel are authenticated through [Auth0](https://auth0.com/). Besides the private endpoints requiring JWT auth, all of the API endpoints are public to consume the index in whatever way you like!
 
-## Building the project locally
+## 🔖 Environment Variables
+
+No matter where you're deploying the project, these environment variables control some of the back-end's behaviour:
+
+* `FLASK_ENV`: Can be "development" while developing
+* `DATABASE_URL`: The connection string to access your PostgreSQL instance. See docs at [SQLAlchemy](https://docs.sqlalchemy.org/en/13/core/engines.html#postgresql) for how to format it. This is already taken care of as `${db.DATABASE_URL}` if you're deploying to DigitalOcean via the button
+* `SENTRY_DSN`: The Sentry [data source name](https://docs.sentry.io/product/sentry-basics/dsn-explainer/), if you'd like to enable logging with Sentry
+* `SENTRY_ENVIRONMENT`: The Sentry [environment](https://docs.sentry.io/product/sentry-basics/environments/), if you'd like to enable logging with Sentry
+
+If you'd like to test drive the admin functionality (where you can approve/deny submissions), sign up for [Auth0](https://auth0.com) and keep track of your Auth0 domain. Create an API and single-page application and make note of the API audience and client ID as these will end up being used for environment variables:
+
+* `ADMIN_OFF`: Set this to `1` if you want to disable the admin endpoints (you don't need them to test out the main website/API)
+* `AUTH0_DOMAIN`: If you want to test out the auth flows, sign up for an Auth0 account (it's free!) and input your Auth0 domain here
+* `AUTH0_API_AUDIENCE`: Create an API in Auth0. Whatever you use as the audience there should be put here
+
+## 🔨 Building the project locally
 
 If you aren't using Docker, you'll need a PostgreSQL instance to connect to somewhere on your computer. 
-
-If you'd like to test drive the admin functionality (where you can approve/deny submissions), sign up for [Auth0](https://auth0.com) and keep track of your Auth0 domain. Create an API and single-page application and make note of the API audience and client ID as these will end up being used for environment variables. To disable private endpoints, just pass `ADMIN_OFF=1` as an env variable. The application doesn't require them.
 
 ### With Docker
 
@@ -48,15 +62,16 @@ If you'd like to test drive the admin functionality (where you can approve/deny 
     AUTH0_API_AUDIENCE=your-api-audience-at-auth0
     ```
 
-3. Build and bring the Docker containers online: `docker-compose up`
-4. In a separate terminal, run the database migration scripts and seed the database (only needs to be done once):
+3. If you want to set up Sentry logging, populate the `SENTRY_DSN` and `SENTRY_ENVIRONMENT` variables in the same `.env` file with your DSN and environment name.
+4. Build and bring the Docker containers online: `docker-compose up`
+5. In a separate terminal, run the database migration scripts and seed the database (only needs to be done once):
 
     ```console
     docker-compose run api flask db upgrade
     docker-compose run api flask admin seed-db
     ```
 
-5. That's all there is to it! Feel free to head over to the [frontend](https://github.com/mm/wswp-frontend) repo and follow the instructions there to get that set up, or test out the API! The base URL for all requests will be `localhost:8000/v1` unless you've set something up otherwise.
+6. That's all there is to it! Feel free to head over to the [frontend](https://github.com/mm/wswp-frontend) repo and follow the instructions there to get that set up, or test out the API! The base URL for all requests will be `http://localhost:8000/v1` unless you've set something up otherwise.
 
 ### Without Docker
 
@@ -64,13 +79,7 @@ If you'd like to test drive the admin functionality (where you can approve/deny 
 
 2. Install all dependencies with Pipenv: `cd wswp && pipenv install`
 
-3. Edit the `.env.example` file and populate these environment variables:
-
-    * `FLASK_ENV` can be development while developing
-    * `DATABASE_URL`: The connection string to access your PostgreSQL instance. See docs at [SQLAlchemy](https://docs.sqlalchemy.org/en/13/core/engines.html#postgresql) for how to format it.
-    * `ADMIN_OFF`: Set this to `1` if you want to disable the admin endpoints (you don't need them to test out the main website/API)
-    * `AUTH0_DOMAIN`: If you want to test out the auth flows, sign up for an Auth0 account (it's free!) and input your Auth0 domain here.
-    * `AUTH0_API_AUDIENCE`: Create an API in Auth0. Whatever you use as the audience there should be put here.
+3. Edit the `.env.example` file and populate the environment variables described in [Environment Variables](#environment-variables). Remove any you won't be using (i.e. if you don't want to set up Sentry logging, you can remove the `SENTRY_` variables). Save this as `.env`.
 
 4. Spawn a shell session with Pipenv and run the database migration scripts to set up your database, then start the dev server locally:
 
@@ -83,7 +92,7 @@ If you'd like to test drive the admin functionality (where you can approve/deny 
 
 5. Good to go! Feel free to go ahead and get the [frontend](https://github.com/mm/wswp-frontend) set up using the instructions there, or test out the API! The base URL for all requests will be `localhost:5000/v1` unless you've set something up otherwise.
 
-## Deploying to DigitalOcean
+## 🚀 Deploying to DigitalOcean
 
 Due to a current limitation with the Deploy to DigitalOcean button, using this button will only deploy the backend (the frontend won't be included). Once the backend has finished deploying, go to your app in the App Platform console and click on the "Console" tab. Enter these two commands to get the database initialized and seeded with some games to start out:
 
@@ -98,7 +107,7 @@ Afterwards, you're ready to go! It's time to deploy the front-end. You can do th
 
 * By forking the [front-end repository](https://github.com/mm/wswp-frontend) to your account and adding it as a static site component to your current back-end project (more instructions are in the [front-end repository](https://github.com/mm/wswp-frontend)). In this case, you want to set your `REACT_APP_API_URL` to `${APP_URL}/api/v1`, since it lives in the same project.
 
-## Using the API
+## 👾 Using the API
 
 The backend exposes a couple public API endpoints (subject to rate limiting), that anyone can use in their applications. All timestamps are returned in UTC and responses are all in JSON. Errors are also returned with a JSON payload describing what happened.
 

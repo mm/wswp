@@ -134,6 +134,10 @@ def random_game():
     # Validate our query param input:
     free_only = request.args.get('free_only', 'false')
     players = request.args.get('players')
+
+    if not players:
+        raise InvalidUsage("Please pass in an integer value for the players query parameter")
+
     try:
         players = int(players)
     except ValueError:

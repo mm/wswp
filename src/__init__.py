@@ -3,11 +3,12 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 from dotenv import find_dotenv, load_dotenv
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 from src.routes import api
 from src.cli import cli_bp
 from src.auth import cors, limiter
-
 
 
 def create_app(config='src.config.DevConfig'):
@@ -28,6 +29,14 @@ def create_app(config='src.config.DevConfig'):
 
     if app.config['ADMIN_OFF']:
         app.logger.info("Note: admin endpoints have been disabled!")
+
+    # Configure Sentry logging. The DSN is read from the SENTRY_DSN
+    # env variable, and the environment is read from the 
+    # SENTRY_ENVIRONMENT variable
+    sentry_sdk.init(
+        integrations=[FlaskIntegration()],
+        traces_sample_rate=0.6
+    )
 
     from src.database import db
     from src.schema import ma

@@ -21,6 +21,8 @@ python-jose = "*"
 requests = "*"
 gunicorn = "*"
 flask-limiter = "*"
+sentry-sdk = "*"
+blinker = "*"
 
 [requires]
 python_version = "3.9"
