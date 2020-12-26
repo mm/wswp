@@ -6,9 +6,9 @@ While we've been social distancing, on lockdown, or apart from friends during CO
 
 ![A GIF of the index and pick random game feature](https://media.giphy.com/media/vYLjeALSmxztMwp5Jw/giphy.gif)
 
-This project was created for the [DigitalOcean App Platform Hackathon](https://dev.to/devteam/announcing-the-digitalocean-app-platform-hackathon-on-dev-2i1k) and serves as the site's backend. Other repositories are available for the site's [front-end](https://github.com/mm/wswp-frontend) and [admin panel](https://github.com/mm/wswp-admin) built to quickly approve and add in community submissions to the index. All three have been deployed to App Platform together and you can access the site at [whatshouldweplay.xyz](https://whatshouldweplay.xyz), but read on to learn more about the stack and building it yourself!
+This project was created for the [DigitalOcean App Platform Hackathon](https://dev.to/devteam/announcing-the-digitalocean-app-platform-hackathon-on-dev-2i1k) and serves as the site's back-end. Other repositories are available for the site's [front-end](https://github.com/mm/wswp-frontend) and [admin panel](https://github.com/mm/wswp-admin) built to quickly approve and add in community submissions to the index. All three have been deployed to App Platform together and you can access the site at [whatshouldweplay.xyz](https://whatshouldweplay.xyz), but read on to learn more about the stack and building it yourself!
 
-**Note:** If you're using the Deploy to DigitalOcean button above, please follow the instructions [here](https://github.com/mm/wswp#deploying-to-digitalocean) to initialize the database and get the front-end and back-end talking to each other.
+**Note:** If you're using the Deploy to DigitalOcean button above, please follow the instructions [here](#-deploying-to-digitalocean) to initialize the database and get the front-end and back-end talking to each other.
 
 ## Table of Contents
 
@@ -28,8 +28,8 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
 
 ## 📚 Overall Project Stack
 
-- **Backend**: Python (Flask for defining the API, SQLAlchemy as an ORM), PostgreSQL
-- **Frontend**: React, Chakra UI for building the user interface
+- **Back-end**: Python (Flask for defining the API, SQLAlchemy as an ORM), PostgreSQL
+- **Front-end**: React, Chakra UI for building the user interface
 
 Private "admin" endpoints used to power the admin panel are authenticated through [Auth0](https://auth0.com/). Besides the private endpoints requiring JWT auth, all of the API endpoints are public to consume the index in whatever way you like!
 
@@ -97,7 +97,7 @@ If you aren't using Docker, you'll need a PostgreSQL instance to connect to some
 
 ## 🚀 Deploying to DigitalOcean
 
-Due to a current limitation with the Deploy to DigitalOcean button, using this button will only deploy the backend (the frontend won't be included). You can leave any environment variables that don't apply to your deployment blank. Once the backend has finished deploying, go to your app in the App Platform console and click on the "Console" tab. Enter these two commands to get the database initialized and seeded with some games to start out:
+Due to a current limitation with the Deploy to DigitalOcean button, using this button will only deploy the back-end (the frontend won't be included). You can leave any environment variables that don't apply to your deployment blank. Once the back-end has finished deploying, go to your app in the App Platform console and click on the "Console" tab. Enter these two commands to get the database initialized and seeded with some games to start out:
 
 ```console
 flask db upgrade
@@ -112,7 +112,7 @@ Afterwards, you're ready to go! It's time to deploy the front-end. You can do th
 
 ## 👾 Using the API
 
-The backend exposes a couple public REST API endpoints (subject to rate limiting), that anyone can use in their applications. All timestamps are returned in UTC and responses are all in JSON. Errors are also returned with a JSON payload describing what happened.
+The back-end exposes a couple public REST API endpoints (subject to rate limiting), that anyone can use in their applications. All timestamps are returned in UTC and responses are all in JSON. Errors are also returned with a JSON payload describing what happened.
 
 For the live API, the base URL for requests is `https://whatshouldweplay.xyz/api/v1`. No authentication is required on these public methods.
 
