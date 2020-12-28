@@ -33,10 +33,12 @@ def create_app(config='src.config.DevConfig'):
     # Configure Sentry logging. The DSN is read from the SENTRY_DSN
     # env variable, and the environment is read from the 
     # SENTRY_ENVIRONMENT variable
-    sentry_sdk.init(
-        integrations=[FlaskIntegration()],
-        traces_sample_rate=0.5
-    )
+    if config != 'src.config.TestConfig':
+        # We don't want to initialize Sentry in testing -- it'd kill the logs
+        sentry_sdk.init(
+            integrations=[FlaskIntegration()],
+            traces_sample_rate=0.5
+        )
 
     from src.database import db
     from src.schema import ma
