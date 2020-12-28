@@ -26,8 +26,9 @@ def app():
         db.session.commit()
     
     yield app
+    # Teardown: Drop all tables Alembic would've created
     with app.app_context():
-        db.engine.execute(text('delete from activity'))
+        db.engine.execute(text('drop table activity, alembic_version, submissions;'))
 
 
 @pytest.fixture
