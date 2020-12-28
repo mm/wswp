@@ -36,7 +36,6 @@ def clear_db():
         text = sqlalchemy.text(
             """
             delete from activity;
-            delete from category;
             """
         )
         db.engine.execute(text)
