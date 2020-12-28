@@ -36,6 +36,7 @@ def client(app):
     """A test client for making API requests"""
     return app.test_client()
 
+
 @pytest.fixture
 def runner(app):
     """A test runner for CLI commands."""

@@ -1,0 +1,121 @@
+{
+    "sample_submissions": [
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "https://google.ca",
+                "description": "test desc",
+                "min_players": 4,
+                "max_players": 8,
+                "paid": false,
+                "submitted_by": "Matt"
+            },
+            "status_code": 200,
+            "id": "perfect"
+        },
+        {
+            "submission": {
+                "name": null,
+                "url": "https://google.ca",
+                "description": "test desc",
+                "min_players": 4,
+                "max_players": 8,
+                "paid": false,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "missing-name"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "google.ca",
+                "description": "test desc",
+                "min_players": 4,
+                "max_players": 8,
+                "paid": false,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "no-url-scheme"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "http://google.ca",
+                "description": "test desc",
+                "min_players": 4,
+                "max_players": 0,
+                "paid": false,
+                "submitted_by": "Matt"
+            },
+            "status_code": 200,
+            "id": "max-players-0"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "http://google.ca",
+                "description": "test desc",
+                "min_players": 4,
+                "max_players": null,
+                "paid": false,
+                "submitted_by": "Matt"
+            },
+            "status_code": 200,
+            "id": "max-players-null"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "http://google.ca",
+                "description": "test desc",
+                "min_players": 4,
+                "max_players": 5,
+                "paid": true,
+                "submitted_by": "Matt"
+            },
+            "status_code": 200,
+            "id": "http-instead-of-https"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "http://google.ca",
+                "description": null,
+                "min_players": 4,
+                "max_players": 5,
+                "paid": true,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "missing-description"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": null,
+                "description": "test desc",
+                "min_players": 4,
+                "max_players": 5,
+                "paid": true,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "missing-url"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "https://google.ca",
+                "description": "test desc",
+                "min_players": 5,
+                "max_players": 4,
+                "paid": true,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "min-exceeds-max"
+        }
+    ]
+}
