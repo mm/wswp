@@ -42,11 +42,3 @@ def clear_db():
         db.engine.execute(text)
 
         click.echo("Database cleared.")
-
-
-@cli_bp.cli.command('backup-games')
-def backup_games():
-    """Creates a time-stamped JSON file of game and category tables,
-    and pushes it to remote storage.
-    """
-    pass
