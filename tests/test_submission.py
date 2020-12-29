@@ -13,5 +13,8 @@ SAMPLE_SUBS = sample_submissions_base()
 
 @pytest.mark.parametrize("submission, expected_code", SAMPLE_SUBS)
 def test_submissions(client, submission, expected_code):
+    """Tests some typical submissions to make sure the error code raised
+    is the one expected (422 in a validation error)
+    """
     rv = client.post('/v1/games/suggest', json=submission)
     assert rv.status_code == expected_code
