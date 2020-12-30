@@ -11,6 +11,10 @@ from seed import seed_game_entries
 
 @pytest.fixture
 def app():
+    """Fixture to have access to the Flask application object, with
+    the database structure already created and tables seeded. Persists
+    once per function.
+    """
     app = create_app('src.config.TestConfig')
 
     with app.app_context():

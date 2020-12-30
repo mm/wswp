@@ -11,7 +11,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 200,
-            "id": "perfect"
+            "id": "perfect",
+            "broken_field": null
         },
         {
             "submission": {
@@ -24,7 +25,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 422,
-            "id": "missing-name"
+            "id": "missing-name",
+            "broken_field": "name"
         },
         {
             "submission": {
@@ -37,7 +39,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 422,
-            "id": "no-url-scheme"
+            "id": "no-url-scheme",
+            "broken_field": "url"
         },
         {
             "submission": {
@@ -50,7 +53,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 200,
-            "id": "max-players-0"
+            "id": "max-players-0",
+            "broken_field": null
         },
         {
             "submission": {
@@ -63,7 +67,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 200,
-            "id": "max-players-null"
+            "id": "max-players-null",
+            "broken_field": null
         },
         {
             "submission": {
@@ -76,7 +81,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 200,
-            "id": "http-instead-of-https"
+            "id": "http-instead-of-https",
+            "broken_field": null
         },
         {
             "submission": {
@@ -89,7 +95,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 422,
-            "id": "missing-description"
+            "id": "missing-description",
+            "broken_field": "description"
         },
         {
             "submission": {
@@ -102,7 +109,8 @@
                 "submitted_by": "Matt"
             },
             "status_code": 422,
-            "id": "missing-url"
+            "id": "missing-url",
+            "broken_field": "url"
         },
         {
             "submission": {
@@ -115,7 +123,60 @@
                 "submitted_by": "Matt"
             },
             "status_code": 422,
-            "id": "min-exceeds-max"
+            "id": "min-exceeds-max",
+            "broken_field": "max_players"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "https://google.ca",
+                "description": "test desc",
+                "min_players": "a",
+                "max_players": 4,
+                "paid": true,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "min-non-numeric",
+            "broken_field": "min_players"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "https://google.ca",
+                "description": "test desc",
+                "min_players": 1,
+                "max_players": "a",
+                "paid": true,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "max-non-numeric",
+            "broken_field": "max_players"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "https://google.ca",
+                "description": "test desc",
+                "min_players": null,
+                "max_players": 1,
+                "paid": true,
+                "submitted_by": "Matt"
+            },
+            "status_code": 422,
+            "id": "min-players-null",
+            "broken_field": "min_players"
+        },
+        {
+            "submission": {
+                "name": "Matt",
+                "url": "https://google.ca",
+                "description": "test desc"
+            },
+            "status_code": 422,
+            "id": "missing-fields",
+            "broken_field": "min_players"
         }
     ]
 }
