@@ -17,6 +17,7 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
 - [Building the project locally](#-building-the-project-locally)
   - [With Docker](#with-docker)
   - [Without Docker](#without-docker)
+- [Running Tests](#-running-tests)
 - [Deploying to DigitalOcean](#-deploying-to-digitalocean)
 - [Using the API](#-using-the-api)
   - [Game Schema](#game-schema)
@@ -94,6 +95,20 @@ If you aren't using Docker, you'll need a PostgreSQL instance to connect to some
     ```
 
 5. Good to go! Feel free to go ahead and get the [frontend](https://github.com/mm/wswp-frontend) set up using the instructions there, or test out the API! The base URL for all requests will be `localhost:5000/v1` unless you've set something up otherwise.
+
+## ✅ Running Tests
+
+A dedicated Docker Compose file is available for spinning up a test environment to run tests against API endpoints. Pytest can be run within that to run all tests:
+
+```console
+docker-compose -f docker-compose.test.yml run --rm testapi pytest
+```
+
+Or running specific test modules:
+
+```console
+docker-compose -f docker-compose.test.yml run --rm testapi pytest tests/test_submission.py
+```
 
 ## 🚀 Deploying to DigitalOcean
 
