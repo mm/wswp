@@ -1,0 +1,12 @@
+name: run-pytest
+on: push
+
+jobs:
+  run-tests:
+    name: Run all API unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start up Docker containers and run all tests
+        run: docker-compose -f docker-compose.test.yml run --rm testapi pytest

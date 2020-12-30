@@ -1,0 +1,21 @@
+# For generating containers to use in a test environment
+version: '3'
+
+services:
+  testapi:
+    restart: always
+    depends_on: 
+      - "testdb"
+    build: .
+    tty: true
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://wswp:supersecure@testdb/postgres
+    volumes:
+      - .:/wswp
+  testdb:
+    restart: always
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=wswp
+      - POSTGRES_PASSWORD=supersecure

@@ -18,3 +18,7 @@ class DevConfig(Config):
 
 class ProdConfig(Config):
     DEBUG = False
+
+
+class TestConfig(Config):
+    TEST = True
