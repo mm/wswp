@@ -10,8 +10,6 @@ services:
     tty: true
     environment:
       - DATABASE_URL=postgresql+psycopg2://wswp:supersecure@testdb/postgres
-    env_file:
-      - .env
     volumes:
       - .:/wswp
   testdb:
