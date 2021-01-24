@@ -4,7 +4,7 @@ to and from the API.
 """
 
 from flask_marshmallow import Marshmallow
-from marshmallow import fields, ValidationError, validates, validates_schema, EXCLUDE
+from marshmallow import fields, ValidationError, validates, validates_schema, EXCLUDE, post_load
 from src.model import Activity, Submission
 
 # This will be bound to an application object
@@ -52,6 +52,7 @@ class SubmissionSchema(ma.SQLAlchemyAutoSchema):
             "submitted_by"
         )
         unknown=EXCLUDE
+        dump_only=("id", "created_date")
     # Override URL, because we want to use the built-in
     # Marshmallow URL validator:
     url = fields.URL(required=True)
