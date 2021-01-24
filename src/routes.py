@@ -307,10 +307,22 @@ def bulk_import_submissions(current_user=None):
 
     try:
         # Attempt to validate and deserialize input data:
-        deserialized_games = [Activity(**data) for data in schema.load(games)]
+        validated = schema.load(games)
+        deserialized_games = []
+        for game in validated:
+            # TODO: Filter fields at the schema level instead of here
+            deserialized_games.append(Activity(
+                name=game.get('name'),
+                description=game.get('description'),
+                max_players=game.get('max_players'),
+                min_players=game.get('min_players'),
+                paid=game.get('paid'),
+                submitted_by=game.get('submitted_by'),
+                url=game.get('url')
+            ))
         # Then, load into the database:
         db.session.add_all(deserialized_games)
-        result = db.session.commit()
+        db.session.commit()
         return jsonify(message=f'{len(deserialized_games)} games added to database'), 200
     except ValidationError:
         raise
