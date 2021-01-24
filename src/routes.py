@@ -288,3 +288,34 @@ def list_submissions(current_user=None):
     
     return jsonify(submissions=results), 200
 
+
+@api.route('/admin/bulk_import', methods=['POST'])
+@requires_auth
+def bulk_import_submissions(current_user=None):
+    """Adds many games at once (useful for a migration to 
+    another server). Requires authentication as an admin.
+    """
+
+    if not current_user:
+        raise AuthError("You need to be authorized to access this endpoint")
+    
+    schema = ActivitySchema(many=True)
+    try:
+        games = request.get_json().get('games')
+    except Exception as e:
+        raise InvalidUsage("Please nest games under the 'games' key in your JSON payload")
+
+    try:
+        # Attempt to validate and deserialize input data:
+        deserialized_games = [Activity(**data) for data in schema.load(games)]
+        # Then, load into the database:
+        db.session.add_all(deserialized_games)
+        result = db.session.commit()
+        return jsonify(message=f'{len(deserialized_games)} games added to database'), 200
+    except ValidationError:
+        raise
+    except Exception as e:
+        current_app.logger.error(f'Unhandled exception during bulk import: {e}')
+        return jsonify(message='Internal server error'), 500
+
+
