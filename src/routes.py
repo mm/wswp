@@ -316,6 +316,7 @@ def bulk_import_submissions(current_user=None):
                 description=game.get('description'),
                 max_players=game.get('max_players'),
                 min_players=game.get('min_players'),
+                created_date=game.get('created_date'),
                 paid=game.get('paid'),
                 submitted_by=game.get('submitted_by'),
                 url=game.get('url')
