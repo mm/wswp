@@ -43,7 +43,8 @@ class Activity(db.Model):
                 from activity
                 where to_tsvector(name || ' ' || coalesce(description, '')) @@ plainto_tsquery(:searchparam)
         """
-        number_of_records = db.engine.execute(text(all_results_count).bindparams(searchparam=search_term)).fetchone()[0]
+        with db.engine.connect() as connection:
+            number_of_records = connection.execute(text(all_results_count).bindparams(searchparam=search_term)).fetchone()[0]
 
         # If we don't have any results off the bat, don't even bother paginating:
         if number_of_records < 1:
