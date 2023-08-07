@@ -8,5 +8,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Start up Docker containers and run all tests
-        run: docker-compose -f docker-compose.test.yml run --rm testapi pytest
+      - name: Set up Python 3.9.17
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9.17
+      - name: Start up database Docker container
+        run: |
+          docker-compose up -d db
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Create testing database
+        run: |
+          flask admin create-test-db
+      - name: Run Pytest
+        run: |
+          pytest -v

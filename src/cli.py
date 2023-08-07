@@ -42,6 +42,20 @@ def clear_db():
 
         click.echo("Database cleared.")
 
+@cli_bp.cli.command('create-test-db')
+def create_test_db():
+    """
+    Creates a database for use with unit tests
+    """
+
+    text = sqlalchemy.text("create database wswp_test;")
+    connection = db.engine.connect()
+    connection.execute(sqlalchemy.text("commit;"))
+    connection.execute(text)
+    connection.close()
+
+    print("Database created")
+
 
 @cli_bp.cli.command('backup-games')
 def backup_games():

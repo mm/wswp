@@ -12,7 +12,7 @@ services:
     links:
       - db:db
     environment:
-      - DATABASE_URL=postgresql+psycopg2://wswp:supersecure@db/postgres
+      - DATABASE_URL=postgresql://wswp:supersecure@db/postgres
     env_file:
       - .env
     volumes:
@@ -23,6 +23,6 @@ services:
     ports:
       - "5433:5432"
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=wswp
-      - POSTGRES_PASSWORD=supersecure
+      POSTGRES_DB: postgres
+      POSTGRES_USER: wswp
+      POSTGRES_PASSWORD: supersecure

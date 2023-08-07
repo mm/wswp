@@ -22,3 +22,4 @@ class ProdConfig(Config):
 
 class TestConfig(Config):
     TEST = True
+    SQLALCHEMY_DATABASE_URI = "postgresql://wswp:supersecure@localhost:5433/wswp_test"

@@ -3,7 +3,7 @@
 
 import pytest
 from sqlalchemy import text
-from flask_migrate import upgrade
+import flask_migrate
 from src import create_app
 from src.database import db
 from src.model import Activity
@@ -18,8 +18,7 @@ def app():
     app = create_app('src.config.TestConfig')
 
     with app.app_context():
-        # Run alembic migrations on the database
-        upgrade(directory='migrations')
+        db.metadata.create_all(checkfirst=True, bind=db.engine)
         
         # Seed initial records to the database for testing:
         game_entries = seed_game_entries()
@@ -30,9 +29,9 @@ def app():
         db.session.commit()
     
     yield app
-    # Teardown: Drop all tables Alembic would've created
+    # Teardown: Drop all tables
     with app.app_context():
-        db.engine.execute(text('drop table activity, alembic_version, submissions;'))
+        db.metadata.drop_all(bind=db.engine, checkfirst=True)
 
 
 @pytest.fixture
