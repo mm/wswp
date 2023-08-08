@@ -1,5 +1,13 @@
 # What Should We Play?
 
+{% note %}
+
+**Note**: While [whatshouldweplay.xyz](https://whatshouldweplay.xyz) will remain online for the foreseeable future, this repository is no longer actively maintained and new submissions to the index will be disabled.
+
+Thank you for all your support! ❤️
+
+{% endnote %}
+
 [![Deploy to DO](https://mp-assets1.sfo2.digitaloceanspaces.com/deploy-to-do/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/mm/wswp/tree/main)
 
 While we've been social distancing, on lockdown, or apart from friends during COVID-19, online games have been an awesome way to keep in touch and still feel connected. With so many games online and all kinds of threads full of games to explore, it can be hard to keep track of them all! I built What Should We Play to serve as an index for games which anyone in the community can quickly add new entries to, and a tool that'll randomly pick games out of the index based on your party size!
@@ -12,20 +20,22 @@ This project was created for the [DigitalOcean App Platform Hackathon](https://d
 
 ## Table of Contents
 
-- [Overall Project Stack](#-overall-project-stack)
-- [Environment Variables](#-environment-variables)
-- [Building the project locally](#-building-the-project-locally)
-  - [With Docker](#with-docker)
-  - [Without Docker](#without-docker)
-- [Running Tests](#-running-tests)
-- [Deploying to DigitalOcean](#-deploying-to-digitalocean)
-- [Using the API](#-using-the-api)
-  - [Game Schema](#game-schema)
-  - [GET /pulse](#get-pulse)
-  - [GET /games](#get-games)
-  - [GET /games/:id](#get-gamesid)
-  - [GET /games/random](#get-gamesrandom)
-  - [GET /games/search](#get-gamessearch)
+- [What Should We Play?](#what-should-we-play)
+  - [Table of Contents](#table-of-contents)
+  - [📚 Overall Project Stack](#-overall-project-stack)
+  - [🔖  Environment Variables](#--environment-variables)
+  - [🔨 Building the project locally](#-building-the-project-locally)
+    - [With Docker](#with-docker)
+    - [Without Docker](#without-docker)
+  - [✅ Running Tests](#-running-tests)
+  - [🚀 Deploying to DigitalOcean](#-deploying-to-digitalocean)
+  - [👾 Using the API](#-using-the-api)
+    - [Game Schema](#game-schema)
+    - [GET /pulse](#get-pulse)
+    - [GET /games](#get-games)
+    - [GET /games/:id](#get-gamesid)
+    - [GET /games/random](#get-gamesrandom)
+    - [GET /games/search](#get-gamessearch)
 
 ## 📚 Overall Project Stack
 
@@ -98,17 +108,13 @@ If you aren't using Docker, you'll need a PostgreSQL instance to connect to some
 
 ## ✅ Running Tests
 
-A dedicated Docker Compose file is available for spinning up a test environment to run tests against API endpoints. Pytest can be run within that to run all tests:
+If you're running tests for the first time, you'll need to make sure the test database exists (and the Postgres service is available):
 
 ```console
-docker-compose -f docker-compose.test.yml run --rm testapi pytest
+flask admin create-test-db
 ```
 
-Or running specific test modules:
-
-```console
-docker-compose -f docker-compose.test.yml run --rm testapi pytest tests/test_submission.py
-```
+Then, you can run the test suite with `pytest`.
 
 ## 🚀 Deploying to DigitalOcean
 
