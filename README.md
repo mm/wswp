@@ -1,12 +1,8 @@
 # What Should We Play?
 
-{% note %}
-
 **Note**: While [whatshouldweplay.xyz](https://whatshouldweplay.xyz) will remain online for the foreseeable future, this repository is no longer actively maintained and new submissions to the index will be disabled.
 
 Thank you for all your support! ❤️
-
-{% endnote %}
 
 [![Deploy to DO](https://mp-assets1.sfo2.digitaloceanspaces.com/deploy-to-do/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/mm/wswp/tree/main)
 
