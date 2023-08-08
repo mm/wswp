@@ -5,22 +5,27 @@ jobs:
   run-tests:
     name: Run all API unit tests
     runs-on: ubuntu-latest
+    container: python:3.9.17-slim
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: wswp
+          POSTGRES_PASSWORD: supersecure
+          POSTGRES_DB: wswp_test
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.9.17
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9.17
-      - name: Start up database Docker container
-        run: |
-          docker-compose up -d db
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Create testing database
-        run: |
-          flask admin create-test-db
       - name: Run Pytest
         run: |
           pytest -v
